@@ -1,27 +1,27 @@
 /**
- *  iotinator Switch Agent module
+ *  iotinator Scheduler Agent module
  *  Xavier Grosjean 2018
  *  Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License
  */
  
-#include "SwitchModule.h"
+#include "SchedulerModule.h"
  
-SwitchModule::SwitchModule(SwitchConfigClass* config, int displayAddr, int displaySda, int displayScl, int relayPin):XIOTModule(config, displayAddr, displaySda, displayScl) {
+SchedulerModule::SchedulerModule(SchedulerConfigClass* config, int displayAddr, int displaySda, int displayScl, int relayPin):XIOTModule(config, displayAddr, displaySda, displayScl) {
   _relayPin = relayPin;
   pinMode(relayPin, OUTPUT);
   _oledDisplay->setLineAlignment(2, TEXT_ALIGN_CENTER);
   setStatus(false);
 }
 
-char* SwitchModule::_customData() {
-//  Serial.println("SwitchModule::_customData");
+char* SchedulerModule::_customData() {
+//  Serial.println("SchedulerModule::_customData");
   char* data = (char *)malloc(100);
   sprintf(data, "{\"status\":\"%s\"}", _status ? "on": "off");
   return data;  
 }
 
-char* SwitchModule::useData(char* data, int* httpCode) {
-Serial.println("switch");
+char* SchedulerModule::useData(char* data, int* httpCode) {
+Serial.println("scheduler");
 Serial.println(data);
   const int bufferSize = 2*JSON_OBJECT_SIZE(1);
   StaticJsonBuffer<bufferSize> jsonBuffer;   
@@ -40,10 +40,10 @@ Serial.println(data);
   return emptyMallocedResponse();
 }
 
-void SwitchModule::setStatus(bool status) {
+void SchedulerModule::setStatus(bool status) {
   _status = status;
   digitalWrite(_relayPin, _status ? HIGH : LOW);
   char message[100];
-  sprintf(message, "Switch is %s", _status ? "ON": "OFF");
+  sprintf(message, "Scheduler is %s", _status ? "ON": "OFF");
   _oledDisplay->setLine(2, message, NOT_TRANSIENT, NOT_BLINKING);
 }

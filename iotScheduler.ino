@@ -1,19 +1,19 @@
 /**
- *  iotinator Switch Agent module
+ *  iotinator Scheduler Agent module
  *  Xavier Grosjean 2018
  *  Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License
  */
  
 
 #include <stdio.h>
-#include "SwitchModule.h"
+#include "SchedulerModule.h"
 
 #include "config.h"
 
 #define API_VERSION "1.0"    // modules can check API version to make sure they are compatible...
 
 // Global object to store config
-SwitchConfigClass *config;
+SchedulerConfigClass *config;
 XIOTModule* module;
 
 int scl = 12;
@@ -33,10 +33,10 @@ void setup(){
   #endif
   delay(500); // time to connect serial
   
-  config = new SwitchConfigClass((unsigned int)CONFIG_VERSION, (char*)MODULE_NAME);
+  config = new SchedulerConfigClass((unsigned int)CONFIG_VERSION, (char*)MODULE_NAME);
   config->init();
  
-  module = new SwitchModule(config, 0x3C, sda, scl, relayPin);
+  module = new SchedulerModule(config, 0x3C, sda, scl, relayPin);
      
 }
 
